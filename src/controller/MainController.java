@@ -29,34 +29,36 @@ import org.kabeja.parser.DXFParser;
 import org.kabeja.parser.Parser;
 import org.kabeja.parser.ParserBuilder;
 
+import kabeja.entity.Circle;
+
 public class MainController{
-	
+
 	public static void main(String[] args) throws FileNotFoundException {
 
 		String sourcepath ="testdxf\\circle.dxf";
 		InputStream source = new FileInputStream(sourcepath);
-		
+
 		ArrayList<Vector3D> points = new ArrayList<Vector3D>();
 		Parser parser = ParserBuilder.createDefaultParser();
 		try {
 
 			parser.parse(source, DXFParser.DEFAULT_ENCODING);
-			
+
 //			ArrayList<CSG> parts = new ArrayList<CSG>();
 			DXFDocument doc = parser.getDocument();
 			Iterator<DXFLayer> layerIterable = doc.getDXFLayerIterator();
 			double extrudeDistance = 5;
-			
+
 			while (layerIterable.hasNext()) {
 				DXFLayer layer = (DXFLayer) layerIterable.next();
-				
+
 				System.out.println("LAYER: " + layer.getName());
 				Iterator entityIterator = layer.getDXFEntityTypeIterator();
-				
+
 				if (entityIterator != null) {
 					while (entityIterator.hasNext()) {
-						String entityType = (String) entityIterator.next();						
-						
+						String entityType = (String) entityIterator.next();
+
 						if (entityType.contentEquals(DXFConstants.ENTITY_TYPE_POLYLINE)) {
 							List plines = layer.getDXFEntities(entityType);
 							if (plines != null) {
@@ -83,7 +85,7 @@ public class MainController{
 									System.out.println("LINE");
 									System.out.println("X = " + point.getX() + ", Y = " + point.getY());
 									System.out.println("length: " + pline.getLength());
-									
+
 									points.add(new Vector3D(point.getX(), point.getY(), point.getZ()));
 									point = pline.getEndPoint();
 									Vector2D vector=new Vector2D(point.getX(), point.getY());
@@ -114,7 +116,6 @@ public class MainController{
 										}
 								}
 							}
-							System.out.println("Done with Object ");
 //							if(points.size()>0)
 //								parts.add(extrude(new Vector3D(0, 0, extrudeDistance), points));
 							points.clear();
@@ -125,21 +126,7 @@ public class MainController{
 								for (Object p : plines) {
 									System.out.println("ENTITY: " + entityType);
 									DXFCircle pline = (DXFCircle) p;
-									
-									Point centerpoint = pline.getCenterPoint();
-									double radius = pline.getRadius();
-									double topY = centerpoint.getY() - radius;
-									double bottomY = centerpoint.getY() + radius;
-									double leftX = centerpoint.getX() - radius;
-									double rightX = centerpoint.getX() + radius;
-									
-									System.out.println("center point: X,Y(" + centerpoint.getX() + ", " + centerpoint.getY() +")");
-									System.out.println("radius: " + radius);
-									System.out.println("topY: " + topY);
-									System.out.println("bottomY: " + bottomY);
-									System.out.println("leftX: " + leftX);
-									System.out.println("rightX: " + rightX);
-											
+									Circle circle = new Circle(pline);
 								}
 							}
 						}
@@ -149,7 +136,15 @@ public class MainController{
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		}	
+		}
 
+	}
+
+	private List checkObjects(DXFLayer layer, String entityType) {
+	    List plines = layer.getDXFEntities(entityType);
+	    if(plines == null) {
+	        return plines;
+	    }
+        return plines;
 	}
 }
