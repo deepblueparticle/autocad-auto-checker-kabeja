@@ -52,12 +52,12 @@ public class MainController{
 						String entityType = (String) entityIterator.next();
 
 						if (entityType.contentEquals(DXFConstants.ENTITY_TYPE_POLYLINE)) {
-							List plines = layer.getDXFEntities(entityType);
-							if (plines != null) {
-								for (Object p : plines) {
-									DXFPolyline pline = (DXFPolyline) p;
-									for (int i = 0; i < pline.getVertexCount(); i++) {
-										DXFVertex vertex = pline.getVertex(i);
+							List entities = layer.getDXFEntities(entityType);
+							if (entities != null) {
+								for (Object e : entities) {
+									DXFPolyline entity = (DXFPolyline) e;
+									for (int i = 0; i < entity.getVertexCount(); i++) {
+										DXFVertex vertex = entity.getVertex(i);
 										Point point = vertex.getPoint();
 										System.out.println("X = " + point.getX() + ", Y = " + point.getY() + ",Z = " +point.getZ());
 									}
@@ -65,28 +65,26 @@ public class MainController{
 							}
 						}
 						else if (entityType.contentEquals(DXFConstants.ENTITY_TYPE_LINE)) {
-							// get all polylines from the layer
-							List plines = layer.getDXFEntities(entityType);
-							if (plines != null) {
-								for (Object p : plines) {
-									DXFLine pline = (DXFLine) p;
-									Point point = pline.getStartPoint();
+							List entities = layer.getDXFEntities(entityType);
+							if (entities != null) {
+								for (Object e : entities) {
+									DXFLine entity = (DXFLine) e;
+									Point point = entity.getStartPoint();
 									System.out.println("LINE");
 									System.out.println("X = " + point.getX() + ", Y = " + point.getY());
-									System.out.println("length: " + pline.getLength());
+									System.out.println("length: " + entity.getLength());
 
-									point = pline.getEndPoint();
+									point = entity.getEndPoint();
 									System.out.print("\n");
 								}
 							}
 						}
 						else if (entityType.contentEquals(DXFConstants.ENTITY_TYPE_SPLINE)) {
-							// get all polylines from the layer
-							List plines = layer.getDXFEntities(entityType);
-							if (plines != null) {
-								for (Object p : plines) {
-									DXFSpline pline = (DXFSpline) p;
-									Iterator splinePointIterator = pline.getSplinePointIterator();
+							List entities = layer.getDXFEntities(entityType);
+							if (entities != null) {
+								for (Object e : entities) {
+									DXFSpline entity = (DXFSpline) e;
+									Iterator splinePointIterator = entity.getSplinePointIterator();
 									if(splinePointIterator!=null)
 										for (;splinePointIterator.hasNext();) {
 											SplinePoint point =(SplinePoint) splinePointIterator.next();
@@ -95,12 +93,12 @@ public class MainController{
 							}
 						}
 						else if (entityType.contentEquals(DXFConstants.ENTITY_TYPE_CIRCLE)) {
-							List plines = layer.getDXFEntities(entityType);
-							if (plines != null) {
-								for (Object p : plines) {
+							List entities = layer.getDXFEntities(entityType);
+							if (entities != null) {
+								for (Object e : entities) {
 									System.out.println("ENTITY: " + entityType);
-									DXFCircle pline = (DXFCircle) p;
-									Circle circle = new Circle(pline);
+									DXFCircle entity = (DXFCircle) e;
+									Circle circle = new Circle(entity);
 								}
 							}
 						}
