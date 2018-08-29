@@ -23,7 +23,9 @@ import org.kabeja.parser.Parser;
 import org.kabeja.parser.ParserBuilder;
 
 import kabeja.entity.Circle;
+import kabeja.entity.Line;
 import kabeja.entity.Polyline;
+import kabeja.entity.SPLine;
 
 public class MainController{
 
@@ -40,9 +42,6 @@ public class MainController{
 //          ArrayList<CSG> parts = new ArrayList<CSG>();
             DXFDocument doc = parser.getDocument();
             Iterator<DXFLayer> layerIterable = doc.getDXFLayerIterator();
-            double extrudeDistance = 5;
-
-
 
             while (layerIterable.hasNext()) {
                 DXFLayer layer = (DXFLayer) layerIterable.next();
@@ -53,64 +52,22 @@ public class MainController{
                 if (entityIterator != null) {
                     while (entityIterator.hasNext()) {
                         String entityType = (String) entityIterator.next();
-
                         switch(entityType) {
                             case DXFConstants.ENTITY_TYPE_POLYLINE:
-                                getPolylineList(layer, entityType); //test
+                                getPolylineList(layer, entityType);
                                 break;
-                            default: break;
-                        }
-
-                        if (entityType.contentEquals(DXFConstants.ENTITY_TYPE_POLYLINE)) {
-                            List entities = layer.getDXFEntities(entityType);
-                            if (entities != null) {
-                                for (Object e : entities) {
-                                    DXFPolyline entity = (DXFPolyline) e;
-                                    for (int i = 0; i < entity.getVertexCount(); i++) {
-                                        DXFVertex vertex = entity.getVertex(i);
-                                        Point point = vertex.getPoint();
-                                        System.out.println("X = " + point.getX() + ", Y = " + point.getY() + ",Z = " +point.getZ());
-                                    }
-                                }
-                            }
-                        }
-                        else if (entityType.contentEquals(DXFConstants.ENTITY_TYPE_LINE)) {
-                            List entities = layer.getDXFEntities(entityType);
-                            if (entities != null) {
-                                for (Object e : entities) {
-                                    DXFLine entity = (DXFLine) e;
-                                    Point point = entity.getStartPoint();
-                                    System.out.println("LINE");
-                                    System.out.println("X = " + point.getX() + ", Y = " + point.getY());
-                                    System.out.println("length: " + entity.getLength());
-
-                                    point = entity.getEndPoint();
-                                    System.out.print("\n");
-                                }
-                            }
-                        }
-                        else if (entityType.contentEquals(DXFConstants.ENTITY_TYPE_SPLINE)) {
-                            List entities = layer.getDXFEntities(entityType);
-                            if (entities != null) {
-                                for (Object e : entities) {
-                                    DXFSpline entity = (DXFSpline) e;
-                                    Iterator splinePointIterator = entity.getSplinePointIterator();
-                                    if(splinePointIterator!=null)
-                                        for (;splinePointIterator.hasNext();) {
-                                            SplinePoint point =(SplinePoint) splinePointIterator.next();
-                                        }
-                                }
-                            }
-                        }
-                        else if (entityType.contentEquals(DXFConstants.ENTITY_TYPE_CIRCLE)) {
-                            List entities = layer.getDXFEntities(entityType);
-                            if (entities != null) {
-                                for (Object e : entities) {
-                                    System.out.println("ENTITY: " + entityType);
-                                    DXFCircle entity = (DXFCircle) e;
-                                    Circle circle = new Circle(entity);
-                                }
-                            }
+                            case DXFConstants.ENTITY_TYPE_LINE:
+                                getLineList(layer, entityType);
+                                break;
+                            case DXFConstants.ENTITY_TYPE_SPLINE:
+                                getSPLineList(layer, entityType);
+                                break;
+                            case DXFConstants.ENTITY_TYPE_CIRCLE:
+                                getCircleList(layer, entityType);
+                                break;
+                            default:
+                                System.out.println("Entity " + entityType + " not found!!!");
+                                break;
                         }
                     }
                 }
@@ -123,7 +80,7 @@ public class MainController{
     }
 
     private static ArrayList getPolylineList(DXFLayer layer, String entityType) {
-        ArrayList<Polyline> circleList = new ArrayList<Polyline>();
+        ArrayList<Polyline> polylineList = new ArrayList<Polyline>();
         List entities = layer.getDXFEntities(entityType);
         if (entities != null) {
             for (Object e : entities) {
@@ -133,6 +90,53 @@ public class MainController{
                     Point point = vertex.getPoint();
                     System.out.println("X = " + point.getX() + ", Y = " + point.getY() + ",Z = " +point.getZ());
                 }
+            }
+        }
+        return polylineList;
+    }
+
+    private static ArrayList getLineList(DXFLayer layer, String entityType) {
+        ArrayList<Line> lineList = new ArrayList<Line>();
+        List entities = layer.getDXFEntities(entityType);
+        if (entities != null) {
+            for (Object e : entities) {
+                DXFLine entity = (DXFLine) e;
+                Point point = entity.getStartPoint();
+                System.out.println("LINE");
+                System.out.println("X = " + point.getX() + ", Y = " + point.getY());
+                System.out.println("length: " + entity.getLength());
+
+                point = entity.getEndPoint();
+                System.out.print("\n");
+            }
+        }
+        return lineList;
+    }
+
+    private static ArrayList getSPLineList(DXFLayer layer, String entityType) {
+        ArrayList<SPLine> spLineList = new ArrayList<SPLine>();
+        List entities = layer.getDXFEntities(entityType);
+        if (entities != null) {
+            for (Object e : entities) {
+                DXFSpline entity = (DXFSpline) e;
+                Iterator splinePointIterator = entity.getSplinePointIterator();
+                if(splinePointIterator!=null)
+                    for (;splinePointIterator.hasNext();) {
+                        SplinePoint point =(SplinePoint) splinePointIterator.next();
+                    }
+            }
+        }
+        return spLineList;
+    }
+
+    private static ArrayList getCircleList(DXFLayer layer, String entityType) {
+        ArrayList<Circle> circleList = new ArrayList<Circle>();
+        List entities = layer.getDXFEntities(entityType);
+        if (entities != null) {
+            for (Object e : entities) {
+                System.out.println("ENTITY: " + entityType);
+                DXFCircle entity = (DXFCircle) e;
+                Circle circle = new Circle(entity);
             }
         }
         return circleList;
