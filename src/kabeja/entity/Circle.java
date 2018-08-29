@@ -3,6 +3,8 @@ package kabeja.entity;
 import org.kabeja.dxf.DXFCircle;
 import org.kabeja.dxf.helpers.Point;
 
+import domain.Logs;
+
 public class Circle {
     private DXFCircle dxfCircle;
     private Point centerPoint;
@@ -21,12 +23,12 @@ public class Circle {
         leftX = centerPoint.getX() - radius;
         rightX = centerPoint.getX() + radius;
 
-        System.out.println("center point: X,Y(" + centerPoint.getX() + ", " + centerPoint.getY() +")");
-        System.out.println("radius: " + radius);
-        System.out.println("topY: " + topY);
-        System.out.println("bottomY: " + bottomY);
-        System.out.println("leftX: " + leftX);
-        System.out.println("rightX: " + rightX);
+        Logs.printLog("center point: X,Y(" + centerPoint.getX() + ", " + centerPoint.getY() +")");
+        Logs.printLog("radius: " + radius);
+        Logs.printLog("topY: " + topY);
+        Logs.printLog("bottomY: " + bottomY);
+        Logs.printLog("leftX: " + leftX);
+        Logs.printLog("rightX: " + rightX);
     }
 
     public DXFCircle getDxfCircle() {

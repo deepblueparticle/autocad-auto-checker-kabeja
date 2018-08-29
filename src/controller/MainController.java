@@ -22,6 +22,7 @@ import org.kabeja.parser.DXFParser;
 import org.kabeja.parser.Parser;
 import org.kabeja.parser.ParserBuilder;
 
+import domain.Logs;
 import kabeja.entity.Circle;
 import kabeja.entity.Line;
 import kabeja.entity.Polyline;
@@ -30,8 +31,8 @@ import kabeja.entity.SPLine;
 public class MainController{
 
     public static void main(String[] args) throws FileNotFoundException {
-
-        String sourcepath ="testdxf\\circle.dxf";
+        Logs.printLog("Starting project...");
+        String sourcepath ="testdxf\\straight-line.dxf";
         InputStream source = new FileInputStream(sourcepath);
 
         Parser parser = ParserBuilder.createDefaultParser();
@@ -46,7 +47,7 @@ public class MainController{
             while (layerIterable.hasNext()) {
                 DXFLayer layer = (DXFLayer) layerIterable.next();
 
-                System.out.println("LAYER: " + layer.getName());
+                Logs.printLog("LAYER: " + layer.getName());
                 Iterator entityIterator = layer.getDXFEntityTypeIterator();
 
                 if (entityIterator != null) {
@@ -66,7 +67,7 @@ public class MainController{
                                 getCircleList(layer, entityType);
                                 break;
                             default:
-                                System.out.println("Entity " + entityType + " not found!!!");
+                                Logs.printLog("Entity " + entityType + " not found in the program!!!");
                                 break;
                         }
                     }
@@ -84,11 +85,12 @@ public class MainController{
         List entities = layer.getDXFEntities(entityType);
         if (entities != null) {
             for (Object e : entities) {
+                Logs.printLog("ENTITY: " + entityType);
                 DXFPolyline entity = (DXFPolyline) e;
                 for (int i = 0; i < entity.getVertexCount(); i++) {
                     DXFVertex vertex = entity.getVertex(i);
                     Point point = vertex.getPoint();
-                    System.out.println("X = " + point.getX() + ", Y = " + point.getY() + ",Z = " +point.getZ());
+                    Logs.printLog("X = " + point.getX() + ", Y = " + point.getY() + ",Z = " +point.getZ());
                 }
             }
         }
@@ -96,18 +98,14 @@ public class MainController{
     }
 
     private static ArrayList getLineList(DXFLayer layer, String entityType) {
+        Logs.printLog("LINE");
         ArrayList<Line> lineList = new ArrayList<Line>();
         List entities = layer.getDXFEntities(entityType);
         if (entities != null) {
             for (Object e : entities) {
+                Logs.printLog("ENTITY: " + entityType);
                 DXFLine entity = (DXFLine) e;
-                Point point = entity.getStartPoint();
-                System.out.println("LINE");
-                System.out.println("X = " + point.getX() + ", Y = " + point.getY());
-                System.out.println("length: " + entity.getLength());
-
-                point = entity.getEndPoint();
-                System.out.print("\n");
+                Line line = new Line(entity);
             }
         }
         return lineList;
@@ -118,11 +116,12 @@ public class MainController{
         List entities = layer.getDXFEntities(entityType);
         if (entities != null) {
             for (Object e : entities) {
+                Logs.printLog("ENTITY: " + entityType);
                 DXFSpline entity = (DXFSpline) e;
                 Iterator splinePointIterator = entity.getSplinePointIterator();
                 if(splinePointIterator!=null)
                     for (;splinePointIterator.hasNext();) {
-                        SplinePoint point =(SplinePoint) splinePointIterator.next();
+                        SplinePoint point = (SplinePoint) splinePointIterator.next();
                     }
             }
         }
@@ -134,7 +133,7 @@ public class MainController{
         List entities = layer.getDXFEntities(entityType);
         if (entities != null) {
             for (Object e : entities) {
-                System.out.println("ENTITY: " + entityType);
+                Logs.printLog("ENTITY: " + entityType);
                 DXFCircle entity = (DXFCircle) e;
                 Circle circle = new Circle(entity);
             }
