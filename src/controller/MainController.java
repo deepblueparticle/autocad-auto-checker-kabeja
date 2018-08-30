@@ -118,6 +118,7 @@ public class MainController{
             for (Object e : entities) {
                 Logs.printLog("ENTITY: " + entityType);
                 DXFSpline entity = (DXFSpline) e;
+                SPLine line = new SPLine(entity);
                 Iterator splinePointIterator = entity.getSplinePointIterator();
                 if(splinePointIterator!=null)
                     for (;splinePointIterator.hasNext();) {
