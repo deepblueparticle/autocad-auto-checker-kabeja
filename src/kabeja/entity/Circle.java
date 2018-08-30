@@ -47,7 +47,6 @@ public class Circle {
         return bottomY;
     }
 
-
     public double getLeftX() {
         return leftX;
     }

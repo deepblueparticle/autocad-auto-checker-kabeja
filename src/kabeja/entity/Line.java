@@ -8,7 +8,6 @@ import domain.Logs;
 public class Line {
     Point startPoint;
     Point endPoint;
-    private double radius;
     private double topY;
     private double bottomY;
     private double leftX;
@@ -43,8 +42,22 @@ public class Line {
         Logs.printLog("End pointX = " + endPoint.getX() + ", End pointY = " + endPoint.getY());
         Logs.printLog("length: " + entity.getLength());
 
+    }
 
+    public double getTopY() {
+        return topY;
+    }
 
+    public double getBottomY() {
+        return bottomY;
+    }
+
+    public double getLeftX() {
+        return leftX;
+    }
+
+    public double getRightX() {
+        return rightX;
     }
 
 }
