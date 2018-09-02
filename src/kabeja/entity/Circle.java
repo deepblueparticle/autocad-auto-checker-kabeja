@@ -18,8 +18,8 @@ public class Circle {
         this.dxfCircle = dxfCircle;
         centerPoint = dxfCircle.getCenterPoint();
         radius = dxfCircle.getRadius();
-        topY = centerPoint.getY() - radius;
-        bottomY = centerPoint.getY() + radius;
+        bottomY = centerPoint.getY() - radius;
+        topY = centerPoint.getY() + radius;
         leftX = centerPoint.getX() - radius;
         rightX = centerPoint.getX() + radius;
 
@@ -29,6 +29,7 @@ public class Circle {
         Logs.printLog("bottomY: " + bottomY);
         Logs.printLog("leftX: " + leftX);
         Logs.printLog("rightX: " + rightX);
+        Logs.printLog("--------------------");
     }
 
     public DXFCircle getDxfCircle() {

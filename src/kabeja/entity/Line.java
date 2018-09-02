@@ -27,7 +27,7 @@ public class Line {
             rightX = startPoint.getX();
         }
 
-        if (startPoint.getY() < endPoint.getY()) {
+        if (startPoint.getY() >= endPoint.getY()) {
             topY = startPoint.getY();
             bottomY = endPoint.getY();
         }
@@ -36,11 +36,14 @@ public class Line {
             topY = endPoint.getY();
         }
 
-        Logs.printLog("Start point: " + startPoint);
-        Logs.printLog("End point: " + endPoint);
         Logs.printLog("Start pointX = " + startPoint.getX() + ", Start pointY = " + startPoint.getY());
         Logs.printLog("End pointX = " + endPoint.getX() + ", End pointY = " + endPoint.getY());
         Logs.printLog("length: " + entity.getLength());
+        Logs.printLog("topY: " + topY);
+        Logs.printLog("bottomY: " + bottomY);
+        Logs.printLog("leftX: " + leftX);
+        Logs.printLog("rightX: " + rightX);
+        Logs.printLog("--------------------");
 
     }
 

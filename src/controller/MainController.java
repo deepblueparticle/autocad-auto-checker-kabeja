@@ -32,8 +32,9 @@ public class MainController{
 
     public static void main(String[] args) throws FileNotFoundException {
         Logs.printLog("Starting project...");
-        String sourcepath ="testdxf\\straight-line.dxf";
+        String sourcepath ="testdxf\\drawing-area-shape.dxf";
         InputStream source = new FileInputStream(sourcepath);
+        Logs.printLog("--------------------");
 
         Parser parser = ParserBuilder.createDefaultParser();
         try {
@@ -49,6 +50,7 @@ public class MainController{
 
                 Logs.printLog("LAYER: " + layer.getName());
                 Iterator entityIterator = layer.getDXFEntityTypeIterator();
+                Logs.printLog("--------------------");
 
                 if (entityIterator != null) {
                     while (entityIterator.hasNext()) {
@@ -66,8 +68,13 @@ public class MainController{
                             case DXFConstants.ENTITY_TYPE_CIRCLE:
                                 getCircleList(layer, entityType);
                                 break;
+                            case DXFConstants.ENTITY_TYPE_LWPOLYLINE:
+                            	Logs.printLog("Entity LWPOLYLINE not yet implemented in the program!!!");
+                            	Logs.printLog("--------------------");
+                            	break;
                             default:
                                 Logs.printLog("Entity " + entityType + " not found in the program!!!");
+                                Logs.printLog("--------------------");
                                 break;
                         }
                     }
@@ -98,7 +105,6 @@ public class MainController{
     }
 
     private static ArrayList getLineList(DXFLayer layer, String entityType) {
-        Logs.printLog("LINE");
         ArrayList<Line> lineList = new ArrayList<Line>();
         List entities = layer.getDXFEntities(entityType);
         if (entities != null) {
@@ -135,5 +141,9 @@ public class MainController{
             }
         }
         return circleList;
+    }
+    
+    private static void getDrawingArea() {
+    	
     }
 }
