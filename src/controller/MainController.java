@@ -11,6 +11,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.kabeja.dxf.DXFCircle;
 import org.kabeja.dxf.DXFConstants;
 import org.kabeja.dxf.DXFDocument;
+import org.kabeja.dxf.DXFLWPolyline;
 import org.kabeja.dxf.DXFLayer;
 import org.kabeja.dxf.DXFLine;
 import org.kabeja.dxf.DXFPolyline;
@@ -26,13 +27,14 @@ import domain.Logs;
 import kabeja.entity.Circle;
 import kabeja.entity.Line;
 import kabeja.entity.Polyline;
+import kabeja.entity.LWPolyline;
 import kabeja.entity.SPLine;
 
 public class MainController{
 
     public static void main(String[] args) throws FileNotFoundException {
         Logs.printLog("Starting project...");
-        String sourcepath ="testdxf\\drawing-area-shape.dxf";
+        String sourcepath ="testdxf\\polyline.dxf";
         InputStream source = new FileInputStream(sourcepath);
         Logs.printLog("--------------------");
 
@@ -69,7 +71,8 @@ public class MainController{
                                 getCircleList(layer, entityType);
                                 break;
                             case DXFConstants.ENTITY_TYPE_LWPOLYLINE:
-                            	Logs.printLog("Entity LWPOLYLINE not yet implemented in the program!!!");
+                            	Logs.printLog("Entity LWPOLYLINE in progress!!!");
+                            	getLWPolylineList(layer, entityType);
                             	Logs.printLog("--------------------");
                             	break;
                             default:
@@ -142,8 +145,25 @@ public class MainController{
         }
         return circleList;
     }
-    
-    private static void getDrawingArea() {
-    	
+
+    private static ArrayList getLWPolylineList(DXFLayer layer, String entityType) {
+        ArrayList<Circle> circleList = new ArrayList<Circle>();
+        List entities = layer.getDXFEntities(entityType);
+        if (entities != null) {
+            for (Object e : entities) {
+                Logs.printLog("ENTITY: " + entityType);
+                DXFLWPolyline entity = (DXFLWPolyline) e;
+
+                Logs.printLog("entity length: " + entity.getLength());
+                Logs.printLog("entity end width: " + entity.getVertexCount());
+
+            }
+        }
+        return null;
+
+    }
+
+    private static void getLWPolylineList() {
+
     }
 }
