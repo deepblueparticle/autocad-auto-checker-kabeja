@@ -32,7 +32,7 @@ public class MainController{
 	
 	public static void main(String[] args) throws FileNotFoundException {
 
-		String sourcepath ="C:\\Users\\caleja\\Desktop\\testdxf\\rectangle-exploded.dxf";
+		String sourcepath ="testdxf\\rectangle-exploded.dxf";
 		InputStream source = new FileInputStream(sourcepath);
 		
 		ArrayList<Vector3D> points = new ArrayList<Vector3D>();
@@ -41,7 +41,7 @@ public class MainController{
 
 			parser.parse(source, DXFParser.DEFAULT_ENCODING);
 			
-//			ArrayList<CSG> parts = new ArrayList<CSG>();
+//			ArrayList<CSG> parts = new ArrayList<CSG>(s);
 			DXFDocument doc = parser.getDocument();
 			Iterator<DXFLayer> layerIterable = doc.getDXFLayerIterator();
 			double extrudeDistance = 5;
@@ -78,6 +78,7 @@ public class MainController{
 							if (plines != null) {
 								for (Object p : plines) {
 									DXFLine pline = (DXFLine) p;
+									
 									Point point = pline.getStartPoint();
 									System.out.println("LINE");
 									System.out.println("X = " + point.getX() + ", Y = " + point.getY());
