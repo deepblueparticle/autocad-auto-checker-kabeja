@@ -147,7 +147,7 @@ public class MainController{
     }
 
     private static ArrayList getLWPolylineList(DXFLayer layer, String entityType) {
-        ArrayList<Circle> circleList = new ArrayList<Circle>();
+        ArrayList<LWPolyline> circleList = new ArrayList<LWPolyline>();
         List entities = layer.getDXFEntities(entityType);
         if (entities != null) {
             for (Object e : entities) {
@@ -155,7 +155,7 @@ public class MainController{
                 DXFLWPolyline entity = (DXFLWPolyline) e;
 
                 Logs.printLog("entity length: " + entity.getLength());
-                Logs.printLog("entity end width: " + entity.getVertexCount());
+                Logs.printLog("entity start width: " + entity.getStartWidth());
 
             }
         }
@@ -163,7 +163,7 @@ public class MainController{
 
     }
 
-    private static void getLWPolylineList() {
+    private static void getDrawingArea() {
 
     }
 }
